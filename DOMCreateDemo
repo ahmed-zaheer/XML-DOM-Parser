@@ -1,0 +1,51 @@
+import java.io.IOException;
+import org.w3c.dom.Document;
+import org.w3c.dom.Node;
+// import org.apache.xerces.dom.DOMImplementationImpl;
+// import org.apache.xml.serialize.XMLSerializer;
+// import org.apache.xml.serialize.OutputFormat;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.Result;
+import javax.xml.transform.Source;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerConfigurationException;
+import javax.xml.transform.TransformerException;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
+
+public class DOMCreateDemo {
+    public static void main (String[] args)
+	throws IOException,
+	       ParserConfigurationException,
+	       TransformerConfigurationException,
+	       TransformerException
+    {
+	Document doc =
+	    DocumentBuilderFactory
+	    .newInstance()
+	    .newDocumentBuilder()
+	    .newDocument();
+	doc.appendChild(doc.createElement("myDocument"));
+	Node de =
+	    doc.getDocumentElement();
+	de.appendChild(doc
+			 .createElement("child1"));
+	Node newnode =
+	    doc.createElement("child2");
+	doc.getDocumentElement()
+	    .appendChild(newnode);
+	Transformer tf
+	    = TransformerFactory
+	    .newInstance()
+	    .newTransformer();
+	Source src
+	    = new DOMSource(doc);
+	Result res
+	    = new StreamResult(System.out);
+	tf.transform(src,res);
+	System.out.println();
+    }
+}
